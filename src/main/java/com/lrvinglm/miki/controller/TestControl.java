@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController  //@ResponseBody用来返回字符串或JSON对象 大多是JSON对象
 public class TestControl {
 
-    @Value("${this.hello:test}")
+    @Value("${this.hello:test33}")
     private String hello;//获取配置文件的自定义配置  读不到就会选择后面的默认值
     /*
     * GET ,POST,PUT,DELETE
