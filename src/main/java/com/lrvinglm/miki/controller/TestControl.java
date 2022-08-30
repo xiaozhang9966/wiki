@@ -1,5 +1,6 @@
 package com.lrvinglm.miki.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 //@Controller  返回页面 @RestController 是返回字符串的
 @RestController  //@ResponseBody用来返回字符串或JSON对象 大多是JSON对象
 public class TestControl {
+
+    @Value("${this.hello:test}")
+    private String hello;//获取配置文件的自定义配置  读不到就会选择后面的默认值
     /*
     * GET ,POST,PUT,DELETE
     * */
@@ -17,7 +21,7 @@ public class TestControl {
     @RequestMapping(value = "/hello",method = RequestMethod.POST)....*/
     @RequestMapping("/hello")  //访问的接口路径 表示这个接口支持所有的请求方式
     public String hello(){
-        return "Hello World";
+        return "Hello World"+hello;
     }
 
     @PostMapping("/hello/post")
