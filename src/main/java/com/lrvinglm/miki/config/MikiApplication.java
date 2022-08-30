@@ -2,6 +2,7 @@ package com.lrvinglm.miki.config;
 
 
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +12,7 @@ import org.springframework.core.env.Environment;
 
 @ComponentScan("com.lrvinglm") //指定路径 @ComponentScan({"com.lrvinglm","com.test"}) 就可以扫描多个包
 @SpringBootApplication
+@MapperScan("com.lrvinglm.miki.mapper")//使SpringBoot知道持久层（sql）是哪个
 public class MikiApplication {
     //LOG作用LoggerFactory.getLogger可以在IDE控制台打印日志,便于开发,一般加在代码最上面
     private static final Logger LOG= LoggerFactory.getLogger(MikiApplication.class);

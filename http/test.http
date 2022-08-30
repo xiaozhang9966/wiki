@@ -10,3 +10,8 @@ Content-Type: application/x-www-form-urlencoded
 name=lin
 
 ###
+
+GET http://localhost:8080/test/list
+Accept: application/json
+
+###
