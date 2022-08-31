@@ -1,7 +1,7 @@
 package com.lrvinglm.miki.resp;
 
 /**
- * 统一后端返回值
+ * 统一后端返回值类型
  * @param <T>
  */
 public class CommonResp<T> {
