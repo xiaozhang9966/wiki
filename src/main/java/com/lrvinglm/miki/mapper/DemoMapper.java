@@ -2,8 +2,9 @@ package com.lrvinglm.miki.mapper;
 
 import com.lrvinglm.miki.domain.Demo;
 import com.lrvinglm.miki.domain.DemoExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface DemoMapper {
     long countByExample(DemoExample example);
