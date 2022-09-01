@@ -1,6 +1,13 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
+    <div style="width: 200px; height: 200px;">
+      <a-button type="primary" shape="round" :size="size">
+        <template #icon>
+          <DownloadOutlined />
+        </template>
+      </a-button>
+    </div>
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
   </div>
 </template>
@@ -8,7 +15,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
-
 export default defineComponent({
   name: 'Home',
   components: {
