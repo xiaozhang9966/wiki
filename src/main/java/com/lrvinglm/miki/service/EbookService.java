@@ -6,11 +6,10 @@ import com.lrvinglm.miki.domain.EbookExample;
 import com.lrvinglm.miki.mapper.EbookMapper;
 import com.lrvinglm.miki.req.EbookReq;
 import com.lrvinglm.miki.resp.EbookResp;
-import org.springframework.beans.BeanUtils;
+import com.lrvinglm.miki.utils.CopyUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,15 +22,18 @@ public class EbookService {
         EbookExample ebookExample = new EbookExample();
         //当作where语句
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%"+req.getName()+"%");
-        List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
+        criteria.andNameLike("%"+req.getName()+"%");                //模糊查询的条件
+        List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);//查询到所有的Ebook实体
 
-        List<EbookResp> respList=new ArrayList<>();
-        for (Ebook e:ebookList) {
-            EbookResp ebookResp=new EbookResp();
-            BeanUtils.copyProperties(e,ebookResp);
-            respList.add(ebookResp);
-        }
+//        List<EbookResp> respList=new ArrayList<>();
+        //遍历所有的Ebook属性给EbookResp 并过滤掉不需要返回的属性
+//        for (Ebook e:ebookList) {
+//            EbookResp ebookResp=new EbookResp();
+//            BeanUtils.copyProperties(e,ebookResp);
+//            EbookResp ebookResp = CopyUtil.copy(e, EbookResp.class);
+//            respList.add(ebookResp);
+//        }
+        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
         return respList;
     }
 }
