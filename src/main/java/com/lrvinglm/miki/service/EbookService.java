@@ -8,6 +8,7 @@ import com.lrvinglm.miki.req.EbookReq;
 import com.lrvinglm.miki.resp.EbookResp;
 import com.lrvinglm.miki.utils.CopyUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -22,7 +23,10 @@ public class EbookService {
         EbookExample ebookExample = new EbookExample();
         //当作where语句
         EbookExample.Criteria criteria = ebookExample.createCriteria();
-        criteria.andNameLike("%"+req.getName()+"%");                //模糊查询的条件
+        if(!ObjectUtils.isEmpty(req.getName())){//不为空才执行
+            criteria.andNameLike("%"+req.getName()+"%"); //模糊查询的条件
+        }
+
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);//查询到所有的Ebook实体
 
 //        List<EbookResp> respList=new ArrayList<>();

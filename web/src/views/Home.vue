@@ -97,7 +97,7 @@ export default defineComponent({
 
     onMounted(()=>{//页面加载完后的才执行的生命周期函数
       console.log("onMounted");
-      axios.get("http://localhost:8880/ebook/list?name=csgo").then((response)=>{ //默认会有个参数 这个参数名是自个起的
+      axios.get("http://localhost:8880/ebook/list").then((response)=>{ //默认会有个参数 这个参数名是自个起的
         const data=response.data;//后端的commonResp的数据
         ebooks.value=data.content;
         console.log(response);
@@ -134,3 +134,12 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped><!--scoped 只在当前组件起作用-->
+.ant-avatar {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 8%;
+  margin: 5px 0;
+}
+</style>
