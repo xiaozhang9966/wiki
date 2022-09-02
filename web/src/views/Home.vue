@@ -46,22 +46,36 @@
     </a-layout-sider>
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
-      Content
+      <pre>
+        {{ebooks}}
+      </pre>
     </a-layout-content>
   </a-layout>>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent ,onMounted,ref} from 'vue';
 import axios from "axios";
 
 export default defineComponent({
   name: 'Home',
-  setup(){//
+  setup(){//初始化函数
     console.log("setup");
-    axios.get("http://localhost:8880/ebook/list?name=csgo").then((response)=>{
-      console.log(response);
-    })
+
+    const ebooks=ref();//实现响应式数据 方式1
+
+    onMounted(()=>{//页面加载完后的才执行的生命周期函数
+      console.log("onMounted");
+      axios.get("http://localhost:8880/ebook/list?name=csgo").then((response)=>{
+        const data=response.data;//后端的commonResp的数据
+        ebooks.value=data.content;
+        console.log(response);
+      });
+    });
+
+    return{
+      ebooks,
+    }
   }
 });
 </script>
