@@ -134,7 +134,7 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped><!--scoped 只在当前组件起作用-->
+<style scoped>
 .ant-avatar {
   width: 50px;
   height: 50px;
