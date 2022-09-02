@@ -46,13 +46,7 @@
     </a-layout-sider>
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
-      <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="listData">
-        <template #footer>
-          <div>
-            <b>ant design vue</b>
-            footer part
-          </div>
-        </template>
+      <a-list item-layout="vertical" size="large" :grid="{gutter : 20,column : 3}"  :data-source="ebooks">
         <template #renderItem="{ item }">
           <a-list-item key="item.title">
             <template #actions>
@@ -61,20 +55,13 @@
             {{ text }}
           </span>
             </template>
-            <template #extra>
-              <img
-                  width="272"
-                  alt="logo"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-              />
-            </template>
+
             <a-list-item-meta :description="item.description">
               <template #title>
-                <a :href="item.href">{{ item.title }}</a>
+                <a :href="item.href">{{ item.name }}</a>
               </template>
-              <template #avatar><a-avatar :src="item.avatar" /></template>
+              <template #avatar><a-avatar :src="item.cover" /></template>
             </a-list-item-meta>
-            {{ item.content }}
           </a-list-item>
         </template>
       </a-list>
