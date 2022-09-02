@@ -91,16 +91,14 @@ for (let i = 0; i < 23; i++) {
 export default defineComponent({
   name: 'Home',
   setup(){//初始化函数
-    console.log("setup");
 
     const ebooks=ref();//实现响应式数据 方式1
 
     onMounted(()=>{//页面加载完后的才执行的生命周期函数
-      console.log("onMounted");
+
       axios.get( "/ebook/list").then((response)=>{ //默认会有个参数 这个参数名是自个起的
         const data=response.data;//后端的commonResp的数据
         ebooks.value=data.content;
-        console.log(response);
       },()=>{
         console.log("如果你需要鼓励的")
       });
