@@ -12,13 +12,13 @@ import axios from "axios";
  * axios拦截器
  * 去store把token拿出来 不为空就加入一个header增加这个token 打印日志
  */
-axios.interceptors.request.use(function (config) {
+axios.interceptors.request.use((config)=> {
     console.log('请求参数:', config);
     return config;
 }, error => {
     return Promise.reject(error);
 });
-axios.interceptors.response.use(function (response) {
+axios.interceptors.response.use((response)=> {
     console.log('返回参数', response);
     return response;
 }, error => {
