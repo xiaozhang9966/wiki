@@ -99,8 +99,6 @@ export default defineComponent({
       axios.get( "/ebook/list").then((response)=>{ //默认会有个参数 这个参数名是自个起的
         const data=response.data;//后端的commonResp的数据
         ebooks.value=data.content;
-      },()=>{
-        console.log("如果你需要鼓励的")
       });
     });
 
