@@ -9,6 +9,7 @@ import com.lrvinglm.miki.domain.EbookExample;
 import com.lrvinglm.miki.mapper.EbookMapper;
 import com.lrvinglm.miki.req.EbookReq;
 import com.lrvinglm.miki.resp.EbookResp;
+import com.lrvinglm.miki.resp.PageResp;
 import com.lrvinglm.miki.utils.CopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class EbookService {
 
     private final static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
-    public List<EbookResp> list(EbookReq req){
+    public PageResp<EbookResp> list(EbookReq req){
 
 
 
@@ -36,7 +37,7 @@ public class EbookService {
         if(!ObjectUtils.isEmpty(req.getName())){//不为空才执行
             criteria.andNameLike("%"+req.getName()+"%"); //模糊查询的条件
         }
-        PageHelper.startPage(1,2);//只会分页最近的需要查询的sql，当页面多条sql时 把分页和sql放一起
+        PageHelper.startPage(req.getPage(),req.getSize());//只会分页最近的需要查询的sql，当页面多条sql时 把分页和sql放一起
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);//查询到所有的Ebook实体
 
         PageInfo<Ebook> pageInfo=new PageInfo<>(ebookList);
@@ -51,6 +52,9 @@ public class EbookService {
 //            respList.add(ebookResp);
 //        }
         List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
-        return respList;
+        PageResp<EbookResp> pageResp=new PageResp();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(respList);
+        return pageResp;
     }
 }
