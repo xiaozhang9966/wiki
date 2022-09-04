@@ -96,9 +96,14 @@ export default defineComponent({
 
     onMounted(()=>{//页面加载完后的才执行的生命周期函数
 
-      axios.get( "/ebook/list").then((response)=>{ //默认会有个参数 这个参数名是自个起的
+      axios.get( "/ebook/list",{
+        params:{
+          page:1,
+          size:1000,
+        }
+      }).then((response)=>{ //默认会有个参数 这个参数名是自个起的
         const data=response.data;//后端的commonResp的数据
-        ebooks.value=data.content;
+        ebooks.value=data.content.list;
       });
     });
 
