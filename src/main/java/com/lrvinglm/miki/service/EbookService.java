@@ -7,8 +7,9 @@ import com.lrvinglm.miki.aspect.LogAspect;
 import com.lrvinglm.miki.domain.Ebook;
 import com.lrvinglm.miki.domain.EbookExample;
 import com.lrvinglm.miki.mapper.EbookMapper;
-import com.lrvinglm.miki.req.EbookReq;
-import com.lrvinglm.miki.resp.EbookResp;
+import com.lrvinglm.miki.req.EbookQueryReq;
+import com.lrvinglm.miki.req.EbookSaveReq;
+import com.lrvinglm.miki.resp.EbookQueryResp;
 import com.lrvinglm.miki.resp.PageResp;
 import com.lrvinglm.miki.utils.CopyUtil;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ public class EbookService {
 
     private final static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
-    public PageResp<EbookResp> list(EbookReq req){
+    public PageResp<EbookQueryResp> list(EbookQueryReq req){
 
 
 
@@ -51,10 +52,24 @@ public class EbookService {
 //            EbookResp ebookResp = CopyUtil.copy(e, EbookResp.class);
 //            respList.add(ebookResp);
 //        }
-        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
-        PageResp<EbookResp> pageResp=new PageResp();
+        List<EbookQueryResp> respList = CopyUtil.copyList(ebookList, EbookQueryResp.class);
+        PageResp<EbookQueryResp> pageResp=new PageResp();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
         return pageResp;
+    }
+
+    /**
+     * 保存
+     */
+    public void save(EbookSaveReq req){
+        Ebook ebook=CopyUtil.copy(req,Ebook.class);
+        if(ObjectUtils.isEmpty(ebook.getId())){
+            //新增
+            ebookMapper.insert(ebook);
+        }else{
+            //更新
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
     }
 }

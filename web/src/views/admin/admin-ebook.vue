@@ -44,11 +44,13 @@
         <a-input v-model:value="ebook.name"/>
       </a-form-item>
       <a-form-item label="分类一">
-        <a-cascader
-            v-model:value="categoryIds"
-            :field-names="{ label: 'name', value: 'id', children: 'children' }"
-            :options="level1"
-        />
+        <a-input v-model:value="ebook.category"/>
+      </a-form-item>
+      <a-form-item label="阅读数">
+        <a-input v-model:value="ebook.viewCount"/>
+      </a-form-item>
+      <a-form-item label="点赞数">
+        <a-input v-model:value="ebook.voteCount"/>
       </a-form-item>
       <a-form-item label="描述">
         <a-input v-model:value="ebook.description" type="textarea"/>
@@ -142,10 +144,18 @@ export default defineComponent({
     const modalLoading = ref(false);
     const handleModalOk = () => {
       modalLoading.value = true;
-      setTimeout( () =>{
-        modalVisible.value = false;
-        modalLoading.value = false;
-      },2000)
+      axios.post("/ebook/save",ebook.value).then((response) => {
+        const data = response.data;  //commonResp
+        if(data.success){
+          modalVisible.value = false;
+          modalLoading.value = false;
+          //重新加载列表
+          handleQuery({
+            page:pagination.value.current,  //查询当前所在的页
+            size:pagination.value.pageSize
+          });
+        }
+      });
     };
     /**
      * 编辑

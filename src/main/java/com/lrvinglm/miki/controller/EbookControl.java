@@ -1,10 +1,13 @@
 package com.lrvinglm.miki.controller;
 
-import com.lrvinglm.miki.req.EbookReq;
+import com.lrvinglm.miki.req.EbookQueryReq;
+import com.lrvinglm.miki.req.EbookSaveReq;
 import com.lrvinglm.miki.resp.CommonResp;
-import com.lrvinglm.miki.resp.EbookResp;
+import com.lrvinglm.miki.resp.EbookQueryResp;
 import com.lrvinglm.miki.resp.PageResp;
 import com.lrvinglm.miki.service.EbookService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,10 +21,17 @@ public class EbookControl {
     private EbookService ebookService;
 
     @RequestMapping("/list")  //接口支持所有的请求方式
-    public CommonResp list(EbookReq req){
-        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
-        PageResp<EbookResp> list= ebookService.list(req);
+    public CommonResp list(EbookQueryReq req){
+        CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
+        PageResp<EbookQueryResp> list= ebookService.list(req);
         resp.setContent(list);
+        return resp;
+    }
+
+    @PostMapping("/save")
+    public CommonResp save(@RequestBody EbookSaveReq req){
+        CommonResp resp = new CommonResp();
+        ebookService.save(req);
         return resp;
     }
 }
