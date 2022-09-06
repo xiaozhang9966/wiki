@@ -6,18 +6,18 @@
       <!--列,key id,数据ebook,分页,等待框,分页执行方法-->
       <a-table
           :columns="columns"
-          :row-key="record => record.id"
+          :row-key="record=>record.name"
           :data-source="ebooks"
           :pagination="pagination"
           :loading="loading"
           @change="handleTableChange"
       >
-        <template #cover="{text:cover}"><!--图片-->
-          <img class="img-wh" v-if="cover" :src="cover" alt="avatar"/>
+        <template #cover="{text:cover}">
+          <img class="img-wh" v-if="cover" :src="cover" alt="avatar"/> <!--渲染图片-->
         </template>
         <template v-slot:action="{ text, record }">
           <a-space size="small">
-            <a-button type="primary">
+            <a-button type="primary" @click="edit">
               编辑
             </a-button>
             <a-button type="primary">
@@ -27,7 +27,16 @@
         </template>
       </a-table>
     </a-layout-content>
+    <a-modal
+        title="Title"
+        v-model:visible="modalVisible"
+        :confirm-loading="modalLoading"
+        @ok="handleModalOk"
+    >
+      <p>阿西吧</p>
+    </a-modal>
   </a-layout>
+
 </template>
 
 <script lang="ts">
@@ -52,7 +61,7 @@ export default defineComponent({
       {
         title: '封面',
         dataIndex: 'cover',
-        slots: {customRender: 'cover'}//渲染
+        slots: {customRender: 'cover'}//渲染      slots: 自定义渲染  title: 表头渲染  customRender: 值渲染
       },
       {
         title: '名称',
@@ -108,6 +117,23 @@ export default defineComponent({
       });
     };
 
+    /*表单*/
+    const modalVisible=ref(false);
+    const modalLoading=ref(false);
+    const handleModalOk=()=>{
+      modalVisible.value=true;
+      setTimeout(()=>{
+        modalLoading.value=false;
+        modalVisible.value=false;
+      },2000)
+    };
+    /**
+     * 编辑
+     */
+    const edit=()=>{
+      modalLoading.value=true;
+    };
+
     onMounted(() => {
       handleQuery({
         page:1,
@@ -122,6 +148,11 @@ export default defineComponent({
       columns,
       loading,
       handleTableChange,
+
+      edit,
+      modalVisible,
+      modalLoading,
+      handleModalOk,
     }
   }
 });

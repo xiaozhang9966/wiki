@@ -3,7 +3,7 @@ package com.lrvinglm.miki.resp;
 import java.util.List;
 
 public class PageResp<T>{
-    private long total;//总页数
+    private long total;//总行数
 
     private List<T> list;
 
