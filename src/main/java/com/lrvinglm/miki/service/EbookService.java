@@ -12,6 +12,7 @@ import com.lrvinglm.miki.req.EbookSaveReq;
 import com.lrvinglm.miki.resp.EbookQueryResp;
 import com.lrvinglm.miki.resp.PageResp;
 import com.lrvinglm.miki.utils.CopyUtil;
+import com.lrvinglm.miki.utils.SnowFlake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
+    @Resource
+    private SnowFlake snowFlake;
     private final static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
     public PageResp<EbookQueryResp> list(EbookQueryReq req){
@@ -66,6 +69,7 @@ public class EbookService {
         Ebook ebook=CopyUtil.copy(req,Ebook.class);
         if(ObjectUtils.isEmpty(ebook.getId())){
             //新增
+            ebook.setId(snowFlake.nextId());
             ebookMapper.insert(ebook);
         }else{
             //更新

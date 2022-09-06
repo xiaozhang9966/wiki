@@ -3,6 +3,9 @@
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '80px'  }"
     >
+      <p>
+        <a-button type="primary" @click="add()" size="large">添加</a-button>
+      </p>
       <!--列,key id,数据ebook,分页,等待框,分页执行方法-->
       <a-table
           :columns="columns"
@@ -164,7 +167,13 @@ export default defineComponent({
       modalVisible .value = true;
       ebook.value = record;
     };
-
+    /**
+     * 添加
+     */
+    const add = () =>{
+      modalVisible .value = true;
+      ebook.value={};
+    };
     onMounted(() => {
       handleQuery({
         page:1,
@@ -180,8 +189,11 @@ export default defineComponent({
       loading,
       handleTableChange,
 
-      ebook,
+
       edit,
+      add,
+
+      ebook,
       modalVisible,
       modalLoading,
       handleModalOk,
