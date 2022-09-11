@@ -64,3 +64,4 @@ insert into `category` (id, parent, name, sort) values(302,300,'服务器',302);
 insert into `category` (id, parent, name, sort) values(400,000,'开发工具',400);
 insert into `category` (id, parent, name, sort) values(401,400,'其他',401);
 insert into `category` (id, parent, name, sort) values(402,400,'集成开发',402);
+insert into `category` (id, parent, name, sort) values(403,400,'离线开发',403);
