@@ -14,7 +14,7 @@ import javax.validation.Valid;
 //@Controller  返回页面 @RestController 是返回字符串的
 @RestController  //@ResponseBody用来返回字符串或JSON对象 大多是JSON对象
 @RequestMapping("/ebook")
-public class EbookControl {
+public class EbookController {
     @Resource
     private EbookService ebookService;
 
