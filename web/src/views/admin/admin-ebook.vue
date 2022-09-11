@@ -75,6 +75,7 @@
 <script lang="ts">
 import {defineComponent, onMounted, ref} from 'vue';//写上onMounted VUE3.0 setup集成了 导入ref 做响应式数据
 import axios from 'axios';
+import { message} from "ant-design-vue";
 
 export default defineComponent({
   name: 'AdminEbook',
@@ -84,7 +85,7 @@ export default defineComponent({
     const ebooks = ref();//响应式数据 获取的书籍实时反馈到页面上
     const pagination = ref({
       current: 1,//当前页
-      pageSize: 4,//分页条数
+      pageSize: 1001,//分页条数
       total: 0
     });
 
@@ -131,12 +132,15 @@ export default defineComponent({
       }).then((response) => {
         loading.value = false;
         const data = response.data;
-        console.log(data);
-        ebooks.value = data.content.list;
+        if (data.success) {
+          ebooks.value = data.content.list;
 
-        //重置分页按钮
-        pagination.value.current = params.page;//点第二页的按钮的时候前端 不会刷新 还是第一页的地方 实际我们以及到第二页了
-        pagination.value.total=data.content.total;
+          //重置分页按钮
+          pagination.value.current = params.page;//点第二页的按钮的时候前端 不会刷新 还是第一页的地方 实际我们以及到第二页了
+          pagination.value.total=data.content.total;
+        }else {
+          message.error(data.message);
+        }
       });
     };
     /**
