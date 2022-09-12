@@ -34,6 +34,11 @@
         <template #cover="{text:cover}">
           <img class="image" v-if="cover" :src="cover" alt="avatar"/> <!--渲染图片-->
         </template>
+
+        <template v-slot:category="{ text, record }">
+          <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
+        </template>
+
         <template v-slot:action="{ text, record }">
           <a-space size="small">
             <a-button type="primary" @click="edit(record)">
@@ -71,9 +76,15 @@
       <a-form-item label="名称">
         <a-input v-model:value="ebook.name"/>
       </a-form-item>
-      <a-form-item label="分类一">
-        <a-input v-model:value="ebook.category"/>
+
+      <a-form-item label="分类">
+        <a-cascader
+            v-model:value="categoryIds"
+            :field-names="{label :'name',value: 'id',children: 'children' }"
+            :options="level1"
+        />
       </a-form-item>
+
       <a-form-item label="阅读数">
         <a-input v-model:value="ebook.viewCount"/>
       </a-form-item>
@@ -93,9 +104,11 @@ import {defineComponent, onMounted, ref} from 'vue';//写上onMounted VUE3.0 set
 import axios from 'axios';
 import { message} from "ant-design-vue";
 import {Tool} from "@/util/tool";
+import AdminCategory from "@/views/admin/admin-category.vue";
 
 export default defineComponent({
   name: 'AdminEbook',
+  components: {AdminCategory},
   setup() {
     const param = ref();
     param.value = {};
@@ -141,6 +154,8 @@ export default defineComponent({
      **/
     const handleQuery = (params: any) => {
       loading.value = true;
+      //如果不清空现有数据﹐则编辑保存重新加载数据后﹐再点编辑，则列表显示的还是编辑前的数据
+      ebooks.value = [];
       axios.get("/ebook/list", {
         params:{
           page:params.page,
@@ -173,11 +188,18 @@ export default defineComponent({
     };
 
     /**表单*/
-    const ebook=ref({});
+    /**
+     * 数组 [100，101]对应：前端开发  / Vue
+     */
+    const categoryIds = ref();
+    const ebook=ref();
     const modalVisible = ref(false);
     const modalLoading = ref(false);
     const handleModalOk = () => {
       modalLoading.value = true;
+      ebook.value.category1Id = categoryIds.value[0];
+      ebook.value.category2Id = categoryIds.value[1];
+
       axios.post("/ebook/save",ebook.value).then((response) => {
         modalLoading.value = false;
         const data = response.data;  //commonResp
@@ -200,6 +222,7 @@ export default defineComponent({
     const edit = ( record:any ) =>{
       modalVisible .value = true;
       ebook.value = Tool.copy(record);
+      categoryIds.value = [ebook.value.category1Id, ebook.value.category2Id]
     };
     /**
      * 添加
@@ -227,12 +250,50 @@ export default defineComponent({
       })
     };
 
+    const level1 = ref();
+    let categorys: any;
+    /**
+     * 查询所有分类
+     */
+    const handleQueryCategory = () =>{
+      loading.value = true;
+      axios.get("/category/all").then((response) => {
+        loading.value = false;
+        const data = response.data;
+        if (data.success) {
+          categorys = data.content;
+          console.log("原始数组：",categorys);
+
+          level1.value = [];
+          level1.value = Tool.array2Tree(categorys, 0);
+          console.log("树形结构：",level1.value);
+
+          //如载完分类后·再加载电子书,否则如果分类树加载很慢﹐则电子书渲染会报错
+          handleQuery({
+            page:1,
+            size:pagination.value.pageSize
+          });
+          //重置分页按钮
+        }else {
+          message.error(data.message);
+        }
+      });
+    };
+
+    const getCategoryName = (cid: number) =>{
+      let result = "";
+      categorys.forEach((item: any) => {
+        if (item.id === cid){
+          result = item.name;
+        }
+      });
+      return result;
+    }
+
 
     onMounted(() => {
-      handleQuery({
-        page:1,
-        size:pagination.value.pageSize
-      });
+      handleQueryCategory();
+
 
     });
 
@@ -243,7 +304,7 @@ export default defineComponent({
       columns,
       loading,
       handleTableChange,
-
+      getCategoryName,
 
       edit,
       add,
@@ -254,6 +315,8 @@ export default defineComponent({
       modalLoading,
       handleModalOk,
       handleQuery,
+      categoryIds,
+      level1,
     }
   }
 });
