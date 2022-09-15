@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 /doc/
 /log/
+=======
+HELP.md
+>>>>>>> parent of 8341f9f (8.29 新建Miki项目)
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
