@@ -92,4 +92,13 @@ public class DocService {
         docMapper.deleteByPrimaryKey(id);
 
     }
+    public void delete(List<String> ids){
+
+        DocExample docExample = new DocExample();
+        docExample.setOrderByClause("sort asc ");
+        DocExample.Criteria criteria = docExample.createCriteria();
+        criteria.andIdIn(ids);
+        docMapper.deleteByExample(docExample);
+
+    }
 }

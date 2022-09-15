@@ -75,24 +75,7 @@
             :replaceFields="{title: 'name',key: 'id',value: 'id'}"
         >
         </a-tree-select>
-      </a-form-item>
 
-
-      <a-form-item label="父文档">
-        <a-select
-            ref="select"
-            v-model:value="doc.parent"
-        >
-          <a-select-option value="0">
-            无
-          </a-select-option>
-          <a-select-option v-for="c in level1" :key="c.id"  :value="c.id" :disabled="doc.id === c.id">
-           {{c.name}}
-          </a-select-option>
-
-
-
-        </a-select>
       </a-form-item>
 
       <a-form-item label="顺序">
@@ -110,6 +93,8 @@ import axios from 'axios';
 import { message} from "ant-design-vue";
 import {Tool} from "@/util/tool";
 import {useRoute} from "vue-router";
+import Combobox from "ant-design-vue/lib/vc-time-picker/Combobox";
+import value = Combobox.props.value;
 
 export default defineComponent({
   name: 'AdminDoc',
@@ -216,6 +201,38 @@ export default defineComponent({
       }
     };
 
+    const ids: Array<string> = [];
+    /**
+     * 查找整根树枝
+     */
+    const getDeleteIds =(treeSelectData:any,id:any)=>{
+      //consoLe.Log(treeselectData, id );
+      // 逦历数组，即逦历某一层节点
+      for (let i =0;i < treeSelectData.length;i++){
+        const node = treeSelectData[i];
+        if (node.id === id){
+          // 如果当前节点就是目标节点
+          console.log("delete",node);
+          // 将目标ID放入结果集ids
+          // node.disabled = true;
+          ids.push(id);
+          //遍历所有子节点
+          const children = node.children;
+          if (Tool.isNotEmpty(children)){
+            for (let j =0;j<children.length;j++){
+              getDeleteIds(children,children[j].id)
+            }
+          }
+        }else {
+          //如果当前节点不是目标节点，则到其子节点再找找看
+          const children = node.children;
+          if (Tool.isNotEmpty(children)){
+            getDeleteIds(children,id);
+          }
+        }
+      }
+    };
+
     /**表单*/
     //因为树选择组件的属性状态，会随着当前编辑的节点而变化，所以单独声明一个响应式变量
     const treeSelectData = ref();
@@ -269,8 +286,10 @@ export default defineComponent({
      * 删除
      */
     const handleDelete = ( id:number ) =>{
-
-      axios.delete("/doc/delete/"+id).then((response)=>{
+      console.log(level1.value,id);
+      getDeleteIds(level1.value,id);
+      console.log(ids);
+      axios.delete("/doc/delete/" + ids.join(",") ).then((response)=>{
         const data = response.data;  //commonResp
         if(data.success){
           //重新加载列表
