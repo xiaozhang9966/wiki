@@ -1,0 +1,17 @@
+#用于测试接口
+GET http://localhost:8080/hello
+Accept: application/json
+
+###
+#ptrp 带参数
+POST http://localhost:8080/hello/post
+Content-Type: application/x-www-form-urlencoded
+
+name=lin
+
+###
+
+GET http://localhost:8080/test/list
+Accept: application/json
+
+###

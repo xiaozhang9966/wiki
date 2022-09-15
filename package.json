@@ -1,0 +1,27 @@
+{
+  "name": "wiki",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaozhang9966/wiki.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xiaozhang9966/wiki/issues"
+  },
+  "homepage": "https://github.com/xiaozhang9966/wiki#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^9.4.0"
+  }
+}
