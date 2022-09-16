@@ -23,13 +23,21 @@
           </p>
           <!--列,key id,数据doc,分页,等待框,分页执行方法-->
           <a-table
+              v-if="level1.length > 0"
               :columns="columns"
               :row-key="record=>record.id"
               :data-source="level1"
               :loading="loading"
               :pagination="false"
               size="small"
+              :defaultExpandAllRows="true"
           >
+            <!--
+              v-if="level1.lenght > 0"
+              :defaultExpandAllRows="true"      增加一个
+              初始时，是否展开所有行
+              必须加v-if="level1.lenght > 0"  否则不生效-->
+
             <template #name="{ text, record }">
 <!--              <img class="image" v-if="cover" :src="cover" alt="avatar"/> &lt;!&ndash;渲染图片&ndash;&gt;-->
               {{record.sort}} {{text}}
@@ -157,6 +165,7 @@ export default defineComponent({
      * }]
      */
     const level1 = ref(); //一级文档树，children属性就是二级文档
+    level1.value = [];
     /**
      * 数据查询
      **/
