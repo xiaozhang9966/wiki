@@ -115,7 +115,6 @@ import AdminCategory from "@/views/admin/admin-category.vue";
 
 export default defineComponent({
   name: 'AdminEbook',
-  components: {AdminCategory},
   setup() {
     const param = ref();
     param.value = {};
