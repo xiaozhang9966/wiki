@@ -4,7 +4,8 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '80px'  }"
     >
 
-      <a-row>
+      <a-row :gutter="24">
+<!--        建议 16+*8n-->
         <a-col :span="8">
           <p>
             <a-form layout="inline" :model="param">
@@ -27,13 +28,15 @@
               :data-source="level1"
               :loading="loading"
               :pagination="false"
+              size="small"
           >
-            <template #cover="{text:cover}">
-              <img class="image" v-if="cover" :src="cover" alt="avatar"/> <!--渲染图片-->
+            <template #name="{ text, record }">
+<!--              <img class="image" v-if="cover" :src="cover" alt="avatar"/> &lt;!&ndash;渲染图片&ndash;&gt;-->
+              {{record.sort}} {{text}}
             </template>
             <template v-slot:action="{ text, record }">
               <a-space size="small">
-                <a-button type="primary" @click="edit(record)">
+                <a-button type="primary" @click="edit(record)" size="small">
                   编辑
                 </a-button>
                 <a-popconfirm
@@ -42,7 +45,7 @@
                     cancel-text="否"
                     @confirm="handleDelete(record.id)"
                 >
-                  <a-button type="primary">
+                  <a-button type="primary" size="small">
                     删除
                   </a-button>
                 </a-popconfirm>
@@ -52,12 +55,23 @@
           </a-table>
         </a-col>
         <a-col :span="16">
-          <!--弹出表单-->
-          <a-form :model="doc" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
-            <a-form-item label="名称">
-              <a-input v-model:value="doc.name"/>
+<!--       开始，为左右分开，富文档添加一个保存按钮-->
+          <p>
+            <a-form layout="inline" :model="param">
+              <a-form-item>
+                <a-button type="primary" @click="handleSave()">
+                  保存
+                </a-button>
+              </a-form-item>
+            </a-form>
+          </p>
+<!--       结束，为左右分开，富文档添加一个保存按钮   -->
+          <!--弹出表单  》》》 修改为左右布局 -->
+          <a-form :model="doc" layout="vertical">
+            <a-form-item>
+              <a-input v-model:value="doc.name" placeholder="名称"/>
             </a-form-item>
-            <a-form-item label="父文档">
+            <a-form-item>
               <a-tree-select
                   v-model:value="doc.parent"
                   style="width: 100%"
@@ -69,10 +83,10 @@
               >
               </a-tree-select>
             </a-form-item>
-            <a-form-item label="顺序">
-              <a-input v-model:value="doc.sort"/>
+            <a-form-item>
+              <a-input v-model:value="doc.sort" placeholder="顺序"/>
             </a-form-item>
-            <a-form-item label="内容">
+            <a-form-item>
               <div id="content"></div>
             </a-form-item>
           </a-form>
@@ -123,18 +137,8 @@ export default defineComponent({
       {
         title: '名称',
         dataIndex: 'name',
+        slots: { customRender: 'name'}
       },
-      {
-        title: '父文档',
-        key: 'parent',
-        dataIndex: 'parent',
-      },
-
-      {
-        title: '顺序',
-        dataIndex: 'sort'
-      },
-
       {
         title: 'Action',
         key: 'action',
@@ -248,9 +252,12 @@ export default defineComponent({
     const modalLoading = ref(false);
 
     const editor = new E('#content');
+    //修改这个值，默认是500，把输入框给遮挡住了，把它变成0，因为在它之上没有东西可以覆盖它
+    //越大就排在顶级，就会把其他的元素给挡住
+    editor.config.zIndex = 0;
 
 
-    const handleModalOk = () => {
+    const handleSave = () => {       //9.16 文档管理页面布局修改   把原来的handleModalOK  修改成handleSave
       modalLoading.value = true;
       axios.post("/doc/save",doc.value).then((response) => {
         modalLoading.value = false;
@@ -278,9 +285,9 @@ export default defineComponent({
       setDisable(treeSelectData.value,record.id);
       //为选择树添加一个“无”
       treeSelectData.value.unshift({id: 0,name: '无'});
-      setTimeout(function (){
-        editor.create();
-      },100);
+      // setTimeout(function (){
+      //   editor.create();
+      // },100);
     };
     /**
      * 添加
@@ -294,9 +301,9 @@ export default defineComponent({
 
       treeSelectData.value = Tool.copy(level1.value);
       treeSelectData.value.unshift({id: 0,name: '无'});
-      setTimeout(function (){
-        editor.create();
-      },100);
+      // setTimeout(function (){
+      //   editor.create();
+      // },100);
     };
 
 
@@ -318,7 +325,7 @@ export default defineComponent({
 
 
     onMounted(() => {
-
+      editor.create();
       handleQuery();
     });
 
@@ -337,7 +344,7 @@ export default defineComponent({
       doc,
       modalVisible,
       modalLoading,
-      handleModalOk,
+      handleSave,       // handleModalOk,
       handleQuery,
     }
   }
