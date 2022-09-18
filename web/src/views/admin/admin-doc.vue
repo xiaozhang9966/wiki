@@ -53,7 +53,8 @@
                     cancel-text="否"
                     @confirm="handleDelete(record.id)"
                 >
-                  <a-button type="primary" size="small">
+                  <a-button type="primary" size="small" style="background-color:red;border: none">
+                    <!-- 更改按钮颜色   style="background-color:red;border: none" -->
                     删除
                   </a-button>
                 </a-popconfirm>

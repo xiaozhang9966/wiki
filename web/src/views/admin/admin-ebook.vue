@@ -57,7 +57,8 @@
                 cancel-text="否"
                 @confirm="handleDelete(record.id)"
             >
-              <a-button type="primary">
+              <a-button type="primary" style="background-color:red;border: none">
+                                          <!--  更改按钮颜色-->
                 删除
               </a-button>
             </a-popconfirm>
@@ -111,7 +112,7 @@ import {defineComponent, onMounted, ref} from 'vue';//写上onMounted VUE3.0 set
 import axios from 'axios';
 import { message} from "ant-design-vue";
 import {Tool} from "@/util/tool";
-import AdminCategory from "@/views/admin/admin-category.vue";
+//import AdminCategory from "@/views/admin/admin-category.vue";
 
 export default defineComponent({
   name: 'AdminEbook',
