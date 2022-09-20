@@ -100,10 +100,9 @@ public class DocService {
     /**
      * 删除
      */
-    public void delete(Long id){
+    public void delete(Long id) {
         //删除指定id的数据
         docMapper.deleteByPrimaryKey(id);
-
     }
     public void delete(List<String> ids){
 
@@ -113,5 +112,10 @@ public class DocService {
         criteria.andIdIn(ids);
         docMapper.deleteByExample(docExample);
 
+    }
+      public String findContent(Long id){
+        //删除指定id的数据
+            Content content = contentMapper.selectByPrimaryKey(id);
+            return content.getContent();
     }
 }
