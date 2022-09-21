@@ -36,9 +36,10 @@ public class DocService {
     private SnowFlake snowFlake;
     private final static Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
-    public List<DocQueryResp> all(){
+    public List<DocQueryResp> all(Long ebookId){
         //domain下的example mybaits自动生成了很多方法
         DocExample docExample = new DocExample();
+        docExample.createCriteria().andEbookIdEqualTo(ebookId);
         docExample.setOrderByClause("sort asc ");
         //当作where语句
         List<Doc> docList = docMapper.selectByExample(docExample);//查询到所有的Doc实体
@@ -113,9 +114,14 @@ public class DocService {
         docMapper.deleteByExample(docExample);
 
     }
-      public String findContent(Long id){
+      public String findContent(Long id){    //查找文档内容，如果找不到会进行一个判断
         //删除指定id的数据
             Content content = contentMapper.selectByPrimaryKey(id);
-            return content.getContent();
+            if (ObjectUtils.isEmpty(content)) {
+                return "";
+            } else {
+                return content.getContent();
+            }
+
     }
 }

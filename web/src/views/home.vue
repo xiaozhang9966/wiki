@@ -54,7 +54,7 @@
         </template>
       </a-list>
     </a-layout-content>
-  </a-layout>>
+  </a-layout>
 </template>
 
 <script lang="ts">

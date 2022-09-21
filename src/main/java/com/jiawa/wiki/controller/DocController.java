@@ -27,10 +27,10 @@ public class DocController {
         resp.setContent(list);
         return resp;
     }
-    @GetMapping("/all")  //接口支持所有的请求方式
-    public CommonResp all(){
+    @GetMapping("/all/{ebookId}")  //接口支持所有的请求方式
+    public CommonResp all(@PathVariable Long ebookId){
         CommonResp<List<DocQueryResp>> resp = new CommonResp<>();
-        List<DocQueryResp> list= docService.all();
+        List<DocQueryResp> list= docService.all(ebookId);
         resp.setContent(list);
         return resp;
     }
