@@ -1,4 +1,4 @@
-package com.jiawa.wiki.controller;
+package com.jiawa.wiki.exception;
 
 public class BusinessException extends RuntimeException{
 

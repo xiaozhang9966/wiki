@@ -39,17 +39,13 @@
         <javaClientGenerator targetProject="src\main\java"
                              targetPackage="com.jiawa.wiki.mapper"
                              type="XMLMAPPER"/>
-        <!--一次只能生成一个table-->
-        <!--自动生成表的代码-->
+
         <!--<table tableName="demo" domainObjectName="Demo"/>-->
         <!--<table tableName="ebook"/>-->
-<!--        <table tableName="category"/>-->
-<!--        <table tableName="doc"/>-->
-        <table tableName="content"/>
         <!--<table tableName="category"/>-->
         <!--<table tableName="doc"/>-->
         <!--<table tableName="content"/>-->
-        <!--<table tableName="user"/>-->
-        <!--<table tableName="ebook_snapshot"/>-->
+        <table tableName="user"/>
+<!--        <table tableName="ebook_snapshot"/>-->
     </context>
 </generatorConfiguration>
